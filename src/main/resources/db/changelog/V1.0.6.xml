@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="2022-06-23 15:00:00" author="rgubin">
+        <sqlFile path="v1.0.6/role_user_table.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.6/rollback/role_user_table_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-06-28 15:00:00" author="rgubin">
+        <sqlFile path="v1.0.6/create_plan.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.6/rollback/create_plan_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-06-28 16:00:00" author="rgubin">
+        <sqlFile path="v1.0.6/change_order.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.6/rollback/change_order_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

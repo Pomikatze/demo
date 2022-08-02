@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <style>
+        body {
+            background: #e3b1b1 url(https://kartinkin.net/uploads/posts/2021-07/1626285248_5-kartinkin-com-p-sobachii-fon-krasivo-5.jpg);
+            background-size: 100%;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<h1 style="text-align: center; color: #ffffff">Добро пожаловать в лучшую CRM на свете!</h1>
+
+<div class="form_auth_block">
+    <div class="form_auth_block_content">
+        <p class="form_auth_block_head_text">Авторизация</p>
+        <form class="form_auth_style" action="#" th:action="@{/auth}" th:object="${jwtRequest}" method="post">
+            <label for="name">Введите Ваш Логин</label>
+            <input type="text" th:field="*{userName}" id="name" placeholder="Введите Ваш Логин">
+            <label for="password">Введите Ваш пароль</label>
+            <input type="text" th:field="*{password}" id="password" placeholder="Введите Ваш Пароль">
+            <button class="form_auth_button" type="submit" name="form_auth_submit">Войти</button>
+        </form>
+        <form class="form_auth_style" action="#" th:action="@{/reg}" method="get">
+            <button class="form_auth_button" type="submit" name="form_auth_submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <a class="btn btn-outline-dark" href="/test/google/auth" role="button" style="text-transform:none">
+            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+            Login with Google
+        </a>
+        <a class="btn btn-outline-dark" href="/test/yandex/auth" role="button" style="text-transform:none">
+            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Yandex sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/58/Yandex_icon.svg" />
+            Войти через Яндекс
+        </a>
+        <a class="btn btn-outline-dark" href="/test/vk/auth" role="button" style="text-transform:none">
+            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="VK sign-in" src="https://upload.wikimedia.org/wikipedia/commons/b/bb/VK_logo_Blue_512x512.png" />
+            Войти через VK
+        </a>
+    </div>
+</div>
+
+<link   rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+</script>
+
+<style>
+    .form_auth_block {
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        background-size: cover;
+        border-radius: 4px;
+    }
+
+    .form_auth_block_content {
+        padding-top: 15%;
+    }
+
+    .form_auth_block_head_text {
+        display: block;
+        text-align: center;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.51);
+        opacity: 0.7;
+    }
+
+    .form_auth_block label {
+        display: block;
+        text-align: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.65);
+        opacity: 0.7;
+        font-weight: 600;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .form_auth_block input {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+        height: 45px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+    }
+
+    input:focus {
+        color: #000000;
+        border-radius: 10px;
+        border: 2px solid #436fea;
+    }
+
+    .form_auth_button {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 10px;
+        border-radius: 10px;
+        height: 35px;
+        border: none;
+        cursor: pointer;
+    }
+
+    ::-webkit-input-placeholder {
+        color: #3f3f44;
+        padding-left: 10px;
+    }
+
+    ::-moz-placeholder {
+        color: #3f3f44;
+        padding-left: 10px;
+    }
+
+    :-moz-placeholder {
+        color: #3f3f44;
+        padding-left: 10px;
+    }
+
+    :-ms-input-placeholder {
+        color: #3f3f44;
+        padding-left: 10px;
+    }
+</style>
+
+</html>

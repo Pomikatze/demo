@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказ</title>
+</head>
+
+<table>
+    <tbody>
+    <tr>
+        <td style="font-weight: bold">id</td>
+        <td style="font-weight: bold">Дата отгрузки</td>
+        <td style="font-weight: bold">Продукт</td>
+        <td style="font-weight: bold">Минимальный вес</td>
+        <td style="font-weight: bold">Кол-во</td>
+        <td style="font-weight: bold">Организация</td>
+    </tr>
+    <tr th:each="order: ${order}">
+        <td style="text-align: center;" th:text="${order.orderId}"/>
+        <td style="text-align: center;" th:text="${order.date}"/>
+        <td style="text-align: center;" th:text="${order.product}"/>
+        <td style="text-align: center;" th:text="${order.minWeight}"/>
+        <td style="text-align: center;" th:text="${order.count}"/>
+        <td style="text-align: center;" th:text="${order.organization}"/>
+    </tr>
+    </tbody>
+</table>
+
+<a href="#" download="test.xls">Скачать файл</a>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="2022-07-07 13:00:00" author="rgubin">
+        <sqlFile path="v1.0.7/update_all_tables.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.7/rollback/update_all_tables_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-07-19 13:00:00" author="rgubin">
+        <sqlFile path="v1.0.7/update_user.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.7/rollback/update_user_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-07-19 14:00:00" author="rgubin">
+        <sqlFile path="v1.0.7/update_sudis.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.7/rollback/update_sudis_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-07-19 15:00:00" author="rgubin">
+        <sqlFile path="v1.0.7/update_plan.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.7/rollback/update_plan_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

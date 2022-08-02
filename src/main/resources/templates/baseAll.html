@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>База</title>
+    <style>
+        body {
+            background: #e3b1b1 url(https://kartinkin.net/uploads/posts/2021-07/1626285248_5-kartinkin-com-p-sobachii-fon-krasivo-5.jpg);
+            background-size: 100%;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+
+<script type="text/javascript"
+        src="https://code.jquery.com/jquery-3.5.1.js">
+</script>
+
+<script type="text/javascript"
+        src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+</script>
+<form style="float: right" action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="Выйти">
+</form>
+<br>
+<hr>
+
+<h2 style="color: #dddddd" th:text="${principal}"></h2>
+
+<form action="#" th:action="@{/api/base}" method="get">
+    <input type="submit" value="Общая база">
+</form>
+<form action="#" th:action="@{/api/chain}" method="get">
+    <input type="submit" value="Сетки">
+</form>
+<form action="#" th:action="@{/api/organization}" method="get">
+    <input type="submit" value="Организации">
+</form>
+
+<table id="workingTable" class="table">
+    <thead>
+    <tr>
+        <th style="font-weight: bold">id</th>
+        <th style="font-weight: bold">Организация</th>
+        <th style="font-weight: bold">Сетка</th>
+        <th style="font-weight: bold">Дата последнего звонка</th>
+        <th style="font-weight: bold">Дата последней отгрузки</th>
+        <th style="font-weight: bold">Нужно позвонить</th>
+        <th style="font-weight: bold">Комментарий</th>
+        <th style="font-weight: bold">Кто ведёт</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="workingBase: ${workingBase}">
+        <td style="text-align: center;" th:text="${workingBase.id}"/>
+        <td style="text-align: center;" th:text="${workingBase.organization}"/>
+        <td style="text-align: center;" th:text="${workingBase.chain}"/>
+        <td style="text-align: center;" th:text="${workingBase.callDttm}"/>
+        <td style="text-align: center;" th:text="${workingBase.shipDttm}"/>
+        <td style="text-align: center;" th:text="${workingBase.needCallDttm}"/>
+        <td style="text-align: center;" th:text="${workingBase.comment}"/>
+        <td style="text-align: center;" th:text="${workingBase.user}"/>
+        <td>
+            <a class="link" th:href="@{/api/organization/{organization}(organization = ${workingBase.organization})}">Посмотреть организацию</a>
+            <a class="link" th:href="@{/api/chain/{chain}(chain = ${workingBase.chain})}">Посмотреть сетку</a>
+            <a class="link" th:href="@{/api/base/add/{id}(id = ${workingBase.id})}">Добавить к себе</a>
+        </td>
+    </tr>
+    </tbody>
+
+    <script>
+        $(document).ready(function () {
+            $('#workingTable').DataTable({});
+        });
+    </script>
+</table>
+
+<style type="text/css">
+    body {
+        padding: 15px 0;
+    }
+
+    .link {
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0 24px;
+        margin: 0 15px 15px 0;
+        outline: none;
+        border: none;
+        border-radius: 3px;
+        height: 13px;
+        line-height: 13px;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: normal;
+        text-decoration: none;
+        color: #0e41c2;
+        background-color: #fff;
+        cursor: pointer;
+        user-select: none;
+        appearance: none;
+        touch-action: manipulation;
+        transition: box-shadow .18s ease-out,background .18s ease-out,color .18s ease-out;
+    }
+    .link:focus-visible {
+        box-shadow: 0 0 0 3px lightskyblue;
+    }
+    .link:hover {
+        box-shadow: 0 1px 1px 0  #cfcfcf, 0 2px 5px 0  #cfcfcf;
+    }
+    .link:active {
+        background-color: #efefef !important;
+    }
+    .link:disabled {
+        background-color: #eee;
+        color: #444;
+        pointer-events: none;
+    }
+
+    .table {
+        width: 100%;
+        border: none;
+        margin-bottom: 20px;
+        border-collapse: separate;
+    }
+    .table thead th {
+        font-weight: bold;
+        text-align: left;
+        border: none;
+        padding: 10px 15px;
+        background: #EDEDED;
+        font-size: 14px;
+        border-top: 1px solid #ddd;
+    }
+    .table tr th:first-child, .table tr td:first-child {
+        border-left: 1px solid #ddd;
+    }
+    .table tr th:last-child, .table tr td:last-child {
+        border-right: 1px solid #ddd;
+    }
+    .table thead tr th:first-child {
+        border-radius: 20px 0 0 0;
+    }
+    .table thead tr th:last-child {
+        border-radius: 0 20px 0 0;
+    }
+    .table tbody td {
+        text-align: left;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        vertical-align: top;
+    }
+    .table tbody tr:nth-child(even) {
+        background: #F8F8F8;
+    }
+    .table tbody tr:last-child td{
+        border-bottom: 1px solid #ddd;
+    }
+    .table tbody tr:last-child td:first-child {
+        border-radius: 0 0 0 20px;
+    }
+    .table tbody tr:last-child td:last-child {
+        border-radius: 0 0 20px 0;
+    }
+</style>
+
+<form action="#" th:action="@{/admin/admin}" method="get">
+    <input type="submit" value="Админка">
+</form>
+<form action="#" th:action="@{/api/plan}" method="get">
+    <input type="submit" value="Ежедневник">
+</form>
+
+</body>
+</html>

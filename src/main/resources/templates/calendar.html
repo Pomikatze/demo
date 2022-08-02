@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Календарь</title>
+    <style>
+        body {
+            background: #e3b1b1 url(https://kartinkin.net/uploads/posts/2021-07/1626285248_5-kartinkin-com-p-sobachii-fon-krasivo-5.jpg);
+            background-size: 100%;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+
+<script type="text/javascript"
+        src="https://code.jquery.com/jquery-3.5.1.js">
+</script>
+
+<script type="text/javascript"
+        src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+</script>
+<form style="float: right" action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="Выйти">
+</form>
+<br>
+<hr>
+<h2 style="color: #dddddd" th:text="${principal}"></h2>
+
+<div align=center>
+    <div style="height:170px;"><div id="calendar_table"></div></div>
+</div>
+
+<a class="link" href="javascript: goUrl();">Показать план на день</a>
+
+<table id="workingTable" class="table">
+    <tbody>
+    <tr>
+        <td style="font-weight: bold">id</td>
+        <td style="font-weight: bold">Что сделать</td>
+        <td style="font-weight: bold">Дата</td>
+        <td style="font-weight: bold">Сделано</td>
+        <td></td>
+    </tr>
+    <tr th:each="plan: ${plan}">
+        <td style="text-align: center;" th:text="${plan.id}"/>
+        <td style="text-align: center;" th:text="${plan.toDo}"/>
+        <td style="text-align: center;" th:text="${plan.toDoDttm}"/>
+        <td style="text-align: center;" th:text="${plan.check}"/>
+        <td>
+            <a class="link" th:href="@{/api/plan/{plan}(plan = ${plan.toDoDttm})}">Выбрать дату</a>
+            <a class="link" th:href="@{/api/calendar/do/{planId} (planId = ${plan.id})}">Готово</a>
+        </td>
+    </tr>
+    </tbody>
+
+    <script>
+        $(document).ready(function () {
+            $('#workingTable').DataTable({});
+        });
+
+    </script>
+</table>
+
+<style>
+    body {
+        padding: 15px 0;
+    }
+
+    .link {
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0 24px;
+        margin: 0 15px 15px 0;
+        outline: none;
+        border: none;
+        border-radius: 3px;
+        height: 13px;
+        line-height: 13px;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: normal;
+        text-decoration: none;
+        color: #0e41c2;
+        background-color: #fff;
+        cursor: pointer;
+        user-select: none;
+        appearance: none;
+        touch-action: manipulation;
+        transition: box-shadow .18s ease-out,background .18s ease-out,color .18s ease-out;
+    }
+    .link:focus-visible {
+        box-shadow: 0 0 0 3px lightskyblue;
+    }
+    .link:hover {
+        box-shadow: 0 1px 1px 0  #cfcfcf, 0 2px 5px 0  #cfcfcf;
+    }
+    .link:active {
+        background-color: #efefef !important;
+    }
+    .link:disabled {
+        background-color: #eee;
+        color: #444;
+        pointer-events: none;
+    }
+
+    .table {
+        width: 100%;
+        border: none;
+        margin-bottom: 20px;
+        border-collapse: separate;
+    }
+    .table thead th {
+        font-weight: bold;
+        text-align: left;
+        border: none;
+        padding: 10px 15px;
+        background: #EDEDED;
+        font-size: 14px;
+        border-top: 1px solid #ddd;
+    }
+    .table tr th:first-child, .table tr td:first-child {
+        border-left: 1px solid #ddd;
+    }
+    .table tr th:last-child, .table tr td:last-child {
+        border-right: 1px solid #ddd;
+    }
+    .table thead tr th:first-child {
+        border-radius: 20px 0 0 0;
+    }
+    .table thead tr th:last-child {
+        border-radius: 0 20px 0 0;
+    }
+    .table tbody td {
+        text-align: left;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        vertical-align: top;
+    }
+    .table tbody tr:nth-child(even) {
+        background: #F8F8F8;
+    }
+    .table tbody tr:last-child td{
+        border-bottom: 1px solid #ddd;
+    }
+    .table tbody tr:last-child td:first-child {
+        border-radius: 0 0 0 20px;
+    }
+    .table tbody tr:last-child td:last-child {
+        border-radius: 0 0 20px 0;
+    }
+    /* Таблица календаря  */
+    .calendar {
+        width: 300px;
+        border: 1px solid #000000;
+        border-collapse: collapse;
+        font-family: Arial;
+        font-size: 11px;
+        background: #ffffff;
+    }
+    /* Заголовок */
+    .calendar th {
+        text-align: center;
+        width: 26px;
+        height: 20px;
+        background: #e2f2fc;
+        color: #000000;
+        border: 1px solid #000000;
+    }
+    /* Заголовок праздника */
+    .calendar th.holiday {
+        color: #FF0000;
+    }
+    /* Ячейка дня */
+    .calendar td {
+        text-align: right;
+        width: 20px;
+        height: 20px;
+        padding-right: 4px;
+        background: #ffffff;
+        border: 1px solid #000000;
+        text-align: right;
+        cursor: pointer;  font-size: 12px;
+    }
+    /* Затемненный день */
+    .calendar td.grayed {
+        background: #F0F0F0;
+        cursor: auto;
+    }
+    /* Выбранный день */
+    .calendar td.selected {
+        background: #038fcf;
+        color: #FFFFFF;
+        box-shadow: 1px 1px rgba(255, 255, 255, 0.5) inset;
+    }
+    /* Праздничный день */
+    .calendar td.holiday {
+        color: #FF0000;
+    }
+    /* Кнопки навигации */
+    .calendar td.navigation {
+        text-align: center;
+        border: 0px none;
+        font-size: 16px;
+        background: #ecebeb;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+</style>
+
+<script th:inline="javascript">
+    calendar = {};
+
+    var thisDay='';
+
+    // Названия месяцев
+    calendar.monthName=[
+        'Январь', 'Февраль', 'Март', 'Апрель',
+        'Май', 'Июнь', 'Июль', 'Август',
+        'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    ];
+
+    // Названия дней недели
+    calendar.dayName=[
+        'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'
+    ];
+
+    // Выбранная дата
+    calendar.selectedDate = {
+        'Day' : null,
+        'Month' : null,
+        'Year' : null
+    };
+
+    // ID элемента для размещения календарика
+    calendar.element_id=null;
+
+    // Выбор даты
+    calendar.selectDate = function(day,month,year) {
+        calendar.selectedDate={
+            'Day' : day,
+            'Month' : month,
+            'Year' : year
+        };
+        calendar.drawCalendar(month,year);
+    }
+
+    // Отрисовка календарика на выбранный месяц и год
+    calendar.drawCalendar = function(month,year) {
+        var tmp='';
+        tmp+='<table class="calendar" cellspacing="0" cellpadding="0">';
+
+        // Месяц и навигация
+        tmp+='<tr>';
+        tmp+='<td class="navigation" '+
+            'onclick="calendar.drawCalendar('+(month>1?(month-1):12)+
+            ','+(month>1?year:(year-1))+');">&#9668;<\/td>';
+        tmp+='<td colspan="5" class="navigation" '+
+            'onclick="calendar.drawCalendar('+
+            calendar.selectedDate.Month+','+
+            calendar.selectedDate.Year+');">'+
+            calendar.monthName[(month-1)]+' - '+year+'<\/td>';
+        tmp+='<td class="navigation" '+
+            'onclick="calendar.drawCalendar('+(month<12?(month+1):1)+
+            ','+(month<12?year:(year+1))+');">&#9658;<\/td>';
+        tmp+='<\/tr>';
+
+        // Шапка таблицы с днями недели
+        tmp+='<tr>';
+        tmp+='<th>'+calendar.dayName[0]+'<\/th>';
+        tmp+='<th>'+calendar.dayName[1]+'<\/th>';
+        tmp+='<th>'+calendar.dayName[2]+'<\/th>';
+        tmp+='<th>'+calendar.dayName[3]+'<\/th>';
+        tmp+='<th>'+calendar.dayName[4]+'<\/th>';
+        tmp+='<th class="holiday">'+calendar.dayName[5]+'<\/th>';
+        tmp+='<th class="holiday">'+calendar.dayName[6]+'<\/th>';
+        tmp+='<\/tr>';
+
+        // Количество дней в месяце
+        var total_days = 32 - new Date(year, (month-1), 32).getDate();
+        // Начальный день месяца
+        var start_day = new Date(year, (month-1), 1).getDay();
+        if (start_day==0) { start_day=7; }
+        start_day--;
+        // Количество ячеек в таблице
+        var final_index=Math.ceil((total_days+start_day)/7)*7;
+
+        var day=1;
+        var index=0;
+        do {
+            // Начало строки таблицы
+            if (index%7==0) {
+                tmp+='<tr>';
+            }
+            // Пустые ячейки до начала месяца или после окончания
+            if ((index<start_day) || (index>=(total_days+start_day))) {
+                tmp+='<td class="grayed"> <\/td>';
+            }
+            else {
+                var class_name='';
+                // Выбранный день
+                if (calendar.selectedDate.Day==day &&
+                    calendar.selectedDate.Month==month &&
+                    calendar.selectedDate.Year==year) {
+                    thisDay='';
+                    thisDay+=day + '-';
+                    if (month<10) {
+                        thisDay+='0' + month + '-';
+                    } else {
+                        thisDay+=month + '-';
+                    }
+                    thisDay+=year;
+                    class_name='selected';
+                }
+                // Праздничный день
+                else if (index%7==6 || index%7==5) {
+                    class_name='holiday';
+                }
+                // Ячейка с датой
+                tmp+='<td class="'+class_name+'" '+
+                    'onclick="calendar.selectDate('+
+                    day+','+month+','+year+');">'+day+'<\/td>';
+                day++;
+            }
+            // Конец строки таблицы
+            if (index%7==6) {
+                tmp+='<\/tr>';
+            }
+            index++;
+        }
+        while (index<final_index);
+
+        tmp+='<\/table>';
+
+        // Вставить таблицу календарика на страницу
+        var el=document.getElementById(calendar.element_id);
+        var el2=document.getElementById("thisDay");
+        if (el) {
+            el.innerHTML=tmp;
+            el2.innerHTML=thisDay;
+        }
+    }
+
+    function goUrl() {
+        document.location.href="http://localhost:8082/test/api/calendar/" + thisDay;
+    }
+
+    // ID элемента для размещения календарика
+    calendar.element_id = 'calendar_table';
+
+    // По умолчанию используется текущая дата
+    calendar.selectedDate={
+        'Day' : new Date().getDate(),
+        'Month' : parseInt(new Date().getMonth())+1,
+        'Year' : new Date().getFullYear()
+    };
+
+    // Нарисовать календарик
+    calendar.drawCalendar(
+        calendar.selectedDate.Month,
+        calendar.selectedDate.Year
+    );
+</script>
+
+<form action="#" th:action="@{/api/base}" method="get">
+    <input type="submit" value="Общая база">
+</form>
+</html>

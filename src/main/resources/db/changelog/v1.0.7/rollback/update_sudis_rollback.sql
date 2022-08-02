@@ -1,0 +1,1 @@
+alter table sudis alter column session_id type varchar(64);

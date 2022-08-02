@@ -1,0 +1,32 @@
+27-06-2022 13:35:17.374 [restartedMain] INFO  com.example.demo.DemoApplication.logStarting - Starting DemoApplication using Java 11.0.15 on 5CD1326N4N with PID 13212 (C:\Users\rgubin\IdeaProjects\demo\target\classes started by rgubin in C:\Users\rgubin\IdeaProjects\demo)
+27-06-2022 13:35:17.376 [restartedMain] INFO  com.example.demo.DemoApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+27-06-2022 13:35:17.406 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor.logTo - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+27-06-2022 13:35:17.407 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor.logTo - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+27-06-2022 13:35:18.732 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer.initialize - Tomcat initialized with port(s): 8082 (http)
+27-06-2022 13:35:18.741 [restartedMain] INFO  o.a.catalina.core.StandardService.log - Starting service [Tomcat]
+27-06-2022 13:35:18.741 [restartedMain] INFO  o.a.catalina.core.StandardEngine.log - Starting Servlet engine: [Apache Tomcat/9.0.63]
+27-06-2022 13:35:18.806 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/test].log - Initializing Spring embedded WebApplicationContext
+27-06-2022 13:35:18.806 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext.prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1398 ms
+27-06-2022 13:35:19.001 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+27-06-2022 13:35:19.160 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+27-06-2022 13:35:19.317 [restartedMain] INFO  liquibase.database.log - Set default schema name to public
+27-06-2022 13:35:19.407 [restartedMain] INFO  liquibase.lockservice.log - Successfully acquired change log lock
+27-06-2022 13:35:19.809 [restartedMain] INFO  liquibase.changelog.log - Reading from public.databasechangelog
+27-06-2022 13:35:19.855 [restartedMain] INFO  liquibase.lockservice.log - Successfully released change log lock
+27-06-2022 13:35:19.933 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+27-06-2022 13:35:19.978 [restartedMain] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.9.Final
+27-06-2022 13:35:20.209 [restartedMain] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+27-06-2022 13:35:20.710 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+27-06-2022 13:35:20.717 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+27-06-2022 13:35:21.049 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+27-06-2022 13:35:21.352 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain.<init> - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7bef10fb, org.springframework.security.web.session.ForceEagerSessionCreationFilter@5edc361, org.springframework.security.web.session.ForceEagerSessionCreationFilter@3e0ead94, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@ab764df, org.springframework.security.web.context.SecurityContextPersistenceFilter@81bbcc5, org.springframework.security.web.header.HeaderWriterFilter@7175d86a, org.springframework.security.web.authentication.logout.LogoutFilter@72c12e6e, com.example.demo.jwt.JwtRequestFilter@11a80fa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ab4decd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@20b435a1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@720ea584, org.springframework.security.web.session.SessionManagementFilter@3246f3b7, org.springframework.security.web.access.ExceptionTranslationFilter@66c3c62d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6ed3680d]
+27-06-2022 13:35:21.479 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+27-06-2022 13:35:21.541 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping.handlerMethodsInitialized - 36 mappings in 'requestMappingHandlerMapping'
+27-06-2022 13:35:21.562 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping.logMappings - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+27-06-2022 13:35:21.569 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+27-06-2022 13:35:21.703 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer.startServer - LiveReload server is running on port 35729
+27-06-2022 13:35:21.738 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer.start - Tomcat started on port(s): 8082 (http) with context path '/test'
+27-06-2022 13:35:21.749 [restartedMain] INFO  com.example.demo.DemoApplication.logStarted - Started DemoApplication in 4.697 seconds (JVM running for 5.616)
+27-06-2022 13:35:26.177 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.destroy - Closing JPA EntityManagerFactory for persistence unit 'default'
+27-06-2022 13:35:26.180 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown initiated...
+27-06-2022 13:35:26.186 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown completed.

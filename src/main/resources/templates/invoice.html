@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Накладная</title>
+</head>
+
+ОАО "Губин", Москва, ул. Пушкина д. 25, +7 (999) 989-88-99 <br>
+<t style="font-weight: bold"> Грузополучатель:</t> <t th:text="${organization}"/> <t th:text="${address}"/><br>
+<t style="font-weight: bold"> Поставщик:</t> ОАО "Губин", Москва, ул. Пушкина д. 25, +7 (999) 989-88-99<br>
+
+<h2>Товарня накладная </h2>
+No:<t th:text="${number}"/> Дата:<t th:text="${date}"/>
+<table style="width: 100%"; border="1">
+    <tbody>
+    <tr>
+        <td style="font-weight: bold">id</td>
+        <td style="font-weight: bold">Продукт</td>
+        <td style="font-weight: bold">Минимальный вес</td>
+        <td style="font-weight: bold">Кол-во</td>
+    </tr>
+    <tr th:each="order: ${order}">
+        <td style="text-align: center;" th:text="${order.orderId}"/>
+        <td style="text-align: center;" th:text="${order.product}"/>
+        <td style="text-align: center;" th:text="${order.minWeight}"/>
+        <td style="text-align: center;" th:text="${order.count}"/>
+    </tr>
+    </tbody>
+</table>
+<br>
+Груз принял     __________
+Грузополучатель __________
+
+<a href="#" download="test.doc">Скачать файл</a>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="2022-06-22 15:00:00" author="rgubin">
+        <sqlFile path="v1.0.5/create_working_base.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.5/rollback/create_working_base_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2022-06-23 15:00:00" author="rgubin">
+        <sqlFile path="v1.0.5/create_seq.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v1.0.5/rollback/create_seq_rollback.sql"
+                     relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

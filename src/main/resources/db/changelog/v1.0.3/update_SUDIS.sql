@@ -1,0 +1,1 @@
+alter table SUDIS alter column token type varchar(256);

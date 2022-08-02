@@ -1,0 +1,1 @@
+ALTER TABLE demo_order ALTER COLUMN product_min_weight TYPE bigint;
