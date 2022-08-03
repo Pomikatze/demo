@@ -40,31 +40,33 @@
 <hr/>
 
 <table id="workingTable" class="table">
-<tbody>
-<tr>
-    <td style="font-weight: bold">id</td>
-    <td style="font-weight: bold">Дата отгрузки</td>
-    <td style="font-weight: bold">Продукт</td>
-    <td style="font-weight: bold">Минимальный вес</td>
-    <td style="font-weight: bold">Кол-во</td>
-    <td style="font-weight: bold">Организация</td>
-</tr>
-<tr th:each="order: ${order}">
-    <td style="text-align: center;" th:text="${order.orderId}"/>
-    <td style="text-align: center;" th:text="${order.date}"/>
-    <td style="text-align: center;" th:text="${order.product}"/>
-    <td style="text-align: center;" th:text="${order.minWeight}"/>
-    <td style="text-align: center;" th:text="${order.count}"/>
-    <td style="text-align: center;" th:text="${order.organization}"/>
-</tr>
-</tbody>
+    <thead>
+    <tr>
+        <th style="font-weight: bold">id</th>
+        <th style="font-weight: bold">Дата отгрузки</th>
+        <th style="font-weight: bold">Продукт</th>
+        <th style="font-weight: bold">Минимальный вес</th>
+        <th style="font-weight: bold">Кол-во</th>
+        <th style="font-weight: bold">Организация</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order: ${order}">
+        <td style="text-align: center;" th:text="${order.orderId}"/>
+        <td style="text-align: center;" th:text="${order.date}"/>
+        <td style="text-align: center;" th:text="${order.product}"/>
+        <td style="text-align: center;" th:text="${order.minWeight}"/>
+        <td style="text-align: center;" th:text="${order.count}"/>
+        <td style="text-align: center;" th:text="${order.organization}"/>
+    </tr>
+    </tbody>
 
-<script>
-    $(document).ready(function () {
-        $('#workingTable').DataTable({});
-    });
+    <script>
+        $(document).ready(function () {
+            $('#workingTable').DataTable({});
+        });
 
-</script>
+    </script>
 </table>
 
 <style type="text/css">
@@ -78,6 +80,7 @@
         margin-bottom: 20px;
         border-collapse: separate;
     }
+
     .table thead th {
         font-weight: bold;
         text-align: left;
@@ -87,18 +90,23 @@
         font-size: 14px;
         border-top: 1px solid #ddd;
     }
+
     .table tr th:first-child, .table tr td:first-child {
         border-left: 1px solid #ddd;
     }
+
     .table tr th:last-child, .table tr td:last-child {
         border-right: 1px solid #ddd;
     }
+
     .table thead tr th:first-child {
         border-radius: 20px 0 0 0;
     }
+
     .table thead tr th:last-child {
         border-radius: 0 20px 0 0;
     }
+
     .table tbody td {
         text-align: left;
         border: none;
@@ -106,15 +114,19 @@
         font-size: 14px;
         vertical-align: top;
     }
+
     .table tbody tr:nth-child(even) {
         background: #F8F8F8;
     }
-    .table tbody tr:last-child td{
+
+    .table tbody tr:last-child td {
         border-bottom: 1px solid #ddd;
     }
+
     .table tbody tr:last-child td:first-child {
         border-radius: 0 0 0 20px;
     }
+
     .table tbody tr:last-child td:last-child {
         border-radius: 0 0 20px 0;
     }
@@ -122,6 +134,9 @@
 
 <form action="#" th:action="@{/api/order/{organization} (organization = ${organization})}" method="get">
     <input type="submit" value="Закончить">
+</form>
+<form action="#" th:action="@{/api/send/{organization}/{orderId} (organization = ${organization}, orderId = ${orderId})}" method="get">
+    <input type="submit" value="Отправить на склад">
 </form>
 
 </body>

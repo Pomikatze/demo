@@ -3,6 +3,8 @@ package com.example.demo.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Schema(description = "Дто сущности 'Организация'")
 @Data
 public class OrganizationDto {
