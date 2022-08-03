@@ -32,12 +32,12 @@ public class InvoiceController {
     @Operation(summary = "Просмотр документа")
     @GetMapping("/{id}")
     public String create(@PathVariable String id, Model model, Principal principal) {
-        if (organizationService.existsByName(id)) {
-            model.addAttribute("order", "Ошибка! Выберите конкретный заказ.");
-            return "invoice";
+        if (!organizationService.existsByName(id)) {
+            model.addAttribute("exceptionMessage", "Ошибка! Выберите конкретный заказ.");
+            return "exception";
         }
 
-        List<OrderDto> orderDtos = orderService.findAllByOrderId(Long.valueOf(id), principal);
+        List<OrderDto> orderDtos = orderService.findAllByOrganizationName(id, principal);
         String date = LocalDate.now().toString();
         model.addAttribute("date", date);
 

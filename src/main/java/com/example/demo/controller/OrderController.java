@@ -66,7 +66,7 @@ public class OrderController {
         return "order";
     }
 
-    @Operation(summary = "Открыть форму для сохранения енового заказа")
+    @Operation(summary = "Открыть форму для сохранения нового заказа")
     @GetMapping("/order/create/{organization}/{orderId}")
     public String orderCreate(@PathVariable String organization, Model model,
                               @PathVariable String orderId, Principal principal) {
@@ -80,6 +80,7 @@ public class OrderController {
         if (!orderId.equals("0")) {
             order = orderService.findAllByOrderId(Long.valueOf(orderId), principal);
             orderDto.setOrderId(Long.valueOf(orderId));
+            model.addAttribute("orderId", orderId);
             model.addAttribute("orderDto", orderDto);
             model.addAttribute("order", order);
             model.addAttribute("organization", organization);
@@ -89,6 +90,7 @@ public class OrderController {
         Long id = date.getTime();
         orderDto.setOrderId(id);
 
+        model.addAttribute("orderId", orderId);
         model.addAttribute("orderDto", orderDto);
         model.addAttribute("order", order);
         model.addAttribute("organization", organization);
