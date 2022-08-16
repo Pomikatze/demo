@@ -30,6 +30,10 @@ public class UserService implements UserDetailsService {
     final private UserMapper userMapper;
 
 
+    public Long getTotalCountUser() {
+        return userRepository.count();
+    }
+
     public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByName(username);
     }

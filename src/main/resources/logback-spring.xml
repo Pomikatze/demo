@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <contextname>logback</contextname>
+    <property resource="application.properties"/>
+    <springproperty scope="context" name="loki4j.url" source="loki4j"/>
+    <springproperty scope="context" name="loki4j.username" source="loki4j"/>
+    <springproperty scope="context" name="loki4j.password" source="loki4j"/>
+    <springproperty scope="context" name="loki4j.connectionTimeoutMs" source="loki4j"/>
+    <springproperty scope="context" name="loki4j.requestTimeoutMs" source="loki4j"/>
+    <springproperty scope="context" name="loki4j.tenantId" source="loki4j"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %white(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>${loki4j.url}</url>
+                    <auth>
+                        <username>${loki4j.username}</username>
+                        <password>${loki4j.password}</password>
+                    </auth>
+            <connectionTimeoutMs>${loki4j.connectionTimeoutMs}</connectionTimeoutMs>
+            <requestTimeoutMs>${loki4j.requestTimeoutMs}</requestTimeoutMs>
+            <tenantId>${loki4j.tenantId}</tenantId>
+        </http>
+        <format>
+            <label>
+                <pattern>app=demo,host=${HOSTNAME},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>l=%level h=${HOSTNAME} c=%logger{20} t=%thread | %msg %ex</pattern>
+            </message>
+            <sortByTime>true</sortByTime>
+        </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOKI"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

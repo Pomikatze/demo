@@ -23,6 +23,10 @@ public class OrganizationService {
 
     private final UserService userService;
 
+    public Long getTotalOrganization() {
+        return organizationRepository.count();
+    }
+
     public OrganizationDto findById(Long id, Principal principal) {
         UserEntity user = userService.findByUsername(principal.getName())
                 .orElseThrow(() -> new DemoException("Пользователь не зарегистрирован"));
