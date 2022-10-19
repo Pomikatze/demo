@@ -1,16 +1,31 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDto;
+import com.example.demo.dto.auth.YandexResponseDto;
+import com.example.demo.dto.auth.YandexUserDto;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.exception.DemoException;
 import com.example.demo.jwt.JwtRequest;
 import com.example.demo.jwt.JwtTokenUtil;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.SudisService;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +40,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.List;
 
 @Tag(name = "Api для аутентификации")
 @Controller
@@ -38,7 +57,10 @@ public class AuthController {
     private String vkSecret;
 
     @Value("${yandex.id}")
-    private String yandexSecret;
+    private String yandexId;
+
+    @Value("${yandex.password}")
+    private String yandexPassword;
 
     private final UserService userService;
 
@@ -52,16 +74,29 @@ public class AuthController {
 
     private final ModelMapper mapper;
 
+    private ObjectMapper objectMapper;
+
+    private HttpClient client;
+
+    @PostConstruct
+    public void init() {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        client = HttpClientBuilder.create().build();
+    }
+
     @Operation(summary = "Аутентификация и присвоение токена")
     @PostMapping("/auth")
     public String createAuthToken(JwtRequest jwtRequest, HttpServletRequest request) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(),
-                    jwtRequest.getPassword()));
-        } catch (BadCredentialsException e) {
-//            return new ResponseEntity<>(new BadCredentialsException("error of auth"), HttpStatus.UNAUTHORIZED);
-            return "error of auth";
-        }
+//        try {
+//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(),
+//                    jwtRequest.getPassword()));
+//        } catch (BadCredentialsException e) {
+////            return new ResponseEntity<>(new BadCredentialsException("error of auth"), HttpStatus.UNAUTHORIZED);
+//            return "error of auth";
+//        }
 
         UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUserName());
 
@@ -91,8 +126,8 @@ public class AuthController {
     @GetMapping("/yandex/auth")
     public String yandexAuth() {
         return "redirect:https://oauth.yandex.ru/authorize?" +
-                "response_type=token&" +
-                "client_id=" + yandexSecret;
+                "response_type=code&" +
+                "client_id=" + yandexId;
     }
 
     @Operation(summary = "Отправить запрос на аутентификацию через Гугл")
@@ -116,8 +151,24 @@ public class AuthController {
 
     @Operation(summary = "Получение кода от Яндекса")
     @GetMapping("/yan")
-    public String yandexOAuth2(HttpServletRequest request) {
-        createAuthToken(new JwtRequest("YandexUser", "123"), request);
+    public String yandexOAuth2(@RequestParam String code, HttpServletRequest request) throws IOException {
+        HttpPost post = new HttpPost("https://oauth.yandex.ru/token");
+
+        post.addHeader("Content-type", "application/x-www-form-urlencoded");
+
+        List<NameValuePair> params = new ArrayList<>(4);
+        params.add(new BasicNameValuePair("grant_type", "authorization_code"));
+        params.add(new BasicNameValuePair("code", code));
+        params.add(new BasicNameValuePair("client_id", yandexId));
+        params.add(new BasicNameValuePair("client_secret", yandexPassword));
+        post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+        HttpResponse response = client.execute(post);
+        String result = getResultOfResponse(response);
+
+        YandexResponseDto responseDto = objectMapper.readValue(result, YandexResponseDto.class);
+        UserEntity user = saveYandexUser(responseDto);
+        createAuthToken(new JwtRequest(user.getName(), user.getPassword()), request);
         return "redirect:http://localhost:8082/test/api/base";
     }
 
@@ -139,18 +190,58 @@ public class AuthController {
     @Operation(summary = "Сохранить нового пользователя")
     @PostMapping("/save")
     public String saveUser(UserDto user) {
+
         if (userService.existsByName(user.getName())) {
             throw new RuntimeException("Такой пользователь уже сущестует");
         }
+
+        saveUserToBase(user);
+        return "redirect:http://localhost:8082/test/api/auth";
+    }
+
+    private String getResultOfResponse(HttpResponse response) throws IOException {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = response.getEntity().getContent().read(buffer)) != -1) {
+            result.write(buffer, 0, length);
+        }
+        return result.toString(StandardCharsets.UTF_8);
+    }
+
+    private UserEntity saveYandexUser(YandexResponseDto dto) throws IOException {
+
+        HttpGet get = new HttpGet("https://login.yandex.ru/info?format=json");
+        get.addHeader("Authorization", "OAuth " + dto.getToken());
+        HttpResponse response = client.execute(get);
+        String result = getResultOfResponse(response);
+        YandexUserDto yandexUserDto = objectMapper.readValue(result, YandexUserDto.class);
+
+        if (!userService.existsByName(yandexUserDto.getFullName())) {
+
+            UserDto userDto = new UserDto();
+            userDto.setName(yandexUserDto.getFullName());
+            userDto.setPassword(yandexUserDto.getLogin());
+            return saveUserToBase(userDto);
+
+        } else {
+            return userService.findByUsername(yandexUserDto.getFullName())
+                    .orElseThrow(() -> new DemoException("Пользователь не найден"));
+        }
+    }
+
+    private UserEntity saveUserToBase(UserDto user) {
         RoleEntity role = new RoleEntity();
         role.setName("ROLE_USER");
         roleService.save(role);
+
         UserEntity userEntity = mapper.map(user, UserEntity.class);
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(role);
         userEntity.setRole(roles);
         userEntity.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
         userService.saveEntity(userEntity);
-        return "redirect:http://localhost:8082/test/api/auth";
+
+        return userEntity;
     }
 }
