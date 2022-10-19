@@ -28,8 +28,7 @@ public class UserEntity implements UserDetails {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-    cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
     targetEntity = RoleEntity.class)
     @JoinTable(name = "role_user",
             joinColumns = @JoinColumn(name = "user_id"),
