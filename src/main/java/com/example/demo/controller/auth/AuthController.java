@@ -30,9 +30,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Value("${vk.id}")
-    private String vkSecret;
-
     private final UserService userService;
 
     private final JwtTokenUtil jwtTokenUtil;
@@ -64,24 +61,6 @@ public class AuthController {
         responseHeaders.set("Authorization", "Bearer " + token);
 
         return "redirect:http://localhost:8082/test/api/base";
-    }
-
-    @Operation(summary = "Отправить запрос на аутентификацию через ВК")
-    @GetMapping("/vk/auth")
-    public String vkAuth() {
-        return "redirect:https://oauth.vk.com/authorize?" +
-                "client_id=" + vkSecret +
-                "&display=page&" +
-                "redirect_uri=http://localhost:8082/test/oauth2&" +
-                "scope=email&" +
-                "response_type=code&" +
-                "v=5.131";
-    }
-
-    @Operation(summary = "Получение кода от ВК")
-    @GetMapping("/oauth2")
-    public String VKoAuth2(@RequestParam String code) {
-        return code;
     }
 
     @Operation(summary = "Открыть форму для регистрации")
