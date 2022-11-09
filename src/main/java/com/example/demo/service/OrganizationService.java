@@ -1,12 +1,18 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.OrganizationDto;
+import com.example.demo.dto.search.OrganizationSearchParam;
 import com.example.demo.entity.OrganizationEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.DemoException;
 import com.example.demo.mapper.OrganizationMapper;
+import com.example.demo.paging.DemoPageResponse;
 import com.example.demo.repositories.OrganizationRepository;
+import com.example.demo.service.api.search.OrganizationSearchWithSpecService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -22,6 +28,8 @@ public class OrganizationService {
     private final OrganizationMapper organizationMapper;
 
     private final UserService userService;
+
+    private final OrganizationSearchWithSpecService searchWithSpecService;
 
     public Long getTotalOrganization() {
         return organizationRepository.count();
@@ -88,5 +96,19 @@ public class OrganizationService {
 
     public boolean existsByName(String name) {
         return organizationRepository.existsByName(name);
+    }
+
+    /**
+     * Поиск организаций по спецификации.
+     *
+     * @param searchParam параметры поиска
+     * @param pageable параметры пагинации
+     * @return {@link DemoPageResponse} {@link OrganizationDto}
+     */
+    public DemoPageResponse<OrganizationDto> searchWithSpec(OrganizationSearchParam searchParam, Pageable pageable) {
+        Specification<OrganizationEntity> spec = searchWithSpecService.generateSpec(searchParam);
+        Page<OrganizationEntity> entities = organizationRepository.findAll(spec, pageable);
+        List<OrganizationDto> content = new ArrayList<>(entities.map(organizationMapper::toDto).getContent());
+        return new DemoPageResponse<>(entities.getTotalElements(), entities.getTotalPages(), content);
     }
 }

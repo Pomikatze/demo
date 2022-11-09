@@ -35,5 +35,6 @@ build/
 **.xls
 **/private.properties
 Dockerfile
+docker-compose.yml
 out/**
 **/META-INF/**
