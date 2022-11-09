@@ -34,6 +34,7 @@ build/
 
 **.xls
 **/private.properties
+fileStorage/**
 Dockerfile
 docker-compose.yml
 out/**
