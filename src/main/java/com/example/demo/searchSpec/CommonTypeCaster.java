@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Преобразовывает value в типу fieldType.
@@ -35,7 +36,9 @@ public class CommonTypeCaster implements TypeCaster {
             } else if (fieldType.equals(Boolean.class) || fieldType.equals(boolean.class)) {
                 return Boolean.parseBoolean(value.toString());
             } else if (fieldType.isEnum()) {
-                return Enum.valueOf((Class)fieldType, value.toString());
+                return Enum.valueOf((Class) fieldType, value.toString());
+            } else if (fieldType.equals(UUID.class)) {
+                return UUID.fromString(value.toString());
             }
         } catch (Exception ex) {
             throw new SearchProcessingException(

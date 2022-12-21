@@ -161,7 +161,14 @@ public class JpaSpecification<T> implements Specification<T> {
                 if (fieldClass.getSuperclass() == null) {
                     throw new NoSuchFieldException(ex.getLocalizedMessage());
                 }
-                type = fieldClass.getSuperclass().getDeclaredField(fieldKey).getType();
+                try {
+                    type = fieldClass.getSuperclass().getDeclaredField(fieldKey).getType();
+                } catch (NoSuchFieldException fieldException) {
+                    if (fieldClass.getSuperclass().getSuperclass() == null) {
+                        throw new NoSuchFieldException(fieldException.getLocalizedMessage());
+                    }
+                    type = fieldClass.getSuperclass().getSuperclass().getDeclaredField(fieldKey).getType();
+                }
             }
             if (Collection.class.isAssignableFrom(type)) {
                 TypeReference typeRef = fieldClass.getDeclaredField(fieldKey).getDeclaredAnnotation(TypeReference.class);

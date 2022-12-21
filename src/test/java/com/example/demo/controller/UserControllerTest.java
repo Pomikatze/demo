@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JacksonConfig;
 import com.example.demo.config.SecurityConfig;
+import com.example.demo.config.WebMvcConfig;
 import com.example.demo.dto.UserDto;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -27,14 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(value = UserController.class,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class))
+@Import({WebMvcConfig.class, JacksonConfig.class})
+@ContextConfiguration(classes = UserController.class)
 public class UserControllerTest {
 
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @MockBean
-//    private UserService userService;
-//
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
 //    @SneakyThrows
 //    @Test
 //    void getAll() {
