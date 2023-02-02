@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @ComponentScan("com.example.demo")
-@PropertySource(value = "classpath:/feign-pib-application-default.yml",
+@PropertySource(value = "classpath:/demo-application.yml",
         factory = YamlPropertyLoaderFactory.class)
 public class CommonFeignConfig {
 

@@ -1,3 +1,9 @@
 demo:
   test:
     expireCacheTime: 600000
+
+feign:
+  common:
+    connectTimeoutMillis: 10000
+    readTimeoutMillis: 60000
+    url: http://localhost:8082/test

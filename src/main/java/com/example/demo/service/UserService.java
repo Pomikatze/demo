@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     final private UserRepository userRepository;
-
     final private RoleService roleService;
-
     final private UserMapper userMapper;
 
 

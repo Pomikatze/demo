@@ -3,7 +3,7 @@ package com.example.demo.config.advice;
 import com.example.demo.entity.LogEntity;
 import com.example.demo.service.LogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,16 +18,16 @@ import java.util.Arrays;
 @Aspect
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LoggingAdvice {
 
-    LogService logService;
+    private final LogService logService;
 
     @Pointcut(value = "execution(* com.example.demo.controller.*.*(..))")
     public void generalPointcut(){}
 
     @Around("generalPointcut()")
-    public Object appLogging(ProceedingJoinPoint pjp) throws JsonProcessingException {
+    public Object appLogging(ProceedingJoinPoint pjp) {
         String method = pjp.getSignature().getName();
         String className = pjp.getTarget().getClass().toString();
         Object[] array = pjp.getArgs();
@@ -39,7 +39,7 @@ public class LoggingAdvice {
 
         logService.saveLog(log);
 
-        Object object = null;
+        Object object;
 
         try {
             object = pjp.proceed();

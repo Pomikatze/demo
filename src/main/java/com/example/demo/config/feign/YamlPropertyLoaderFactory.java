@@ -22,7 +22,7 @@ public class YamlPropertyLoaderFactory implements PropertySourceFactory {
         try {
             propertiesFromYaml = loadYamlIntoProperties(resource);
         } catch (FileNotFoundException e) {
-            propertiesFromYaml = loadYamlIntoProperties(new EncodedResource(new ClassPathResource("feign-pib-application-default.yml")));
+            propertiesFromYaml = loadYamlIntoProperties(new EncodedResource(new ClassPathResource("demo-application.yml")));
         }
         String sourceName = name != null ? name : resource.getResource().getFilename();
         if (sourceName == null) {
