@@ -8,11 +8,13 @@ import com.example.demo.jwt.JwtRequestFilter;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
@@ -32,33 +34,33 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest(controllers = UserController.class,
-//        excludeFilters = {
-//                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
-//                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtRequestFilter.class)
-//        })
-//@AutoConfigureMockMvc
-//@Import({WebMvcConfig.class, JacksonConfig.class})
+@SpringBootTest(classes = UserController.class)
+@Import({WebMvcConfig.class, JacksonConfig.class})
 public class UserControllerTest {
 
 //    @Autowired
 //    private MockMvc mockMvc;
-//
-//    @MockBean
-//    private UserService userService;
-//
-//    @SneakyThrows
-//    @Test
-//    void getAll() {
-//        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
-//
-//        when(userService.findAllDto()).thenReturn(response);
-//
+
+    @Autowired
+    private UserController userController;
+
+    @MockBean
+    private UserService userService;
+
+    @SneakyThrows
+    @Test
+    void getAll() {
+        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
+
+        when(userService.findAllDto()).thenReturn(response);
+
 //        mockMvc.perform(get("/user"))
 //                .andExpect(status().isOk())
 //                .andExpect(responseBody().containsObjectAsJson(response, new TypeReference<List<UserDto>>() {
 //                }));
-//
-//        verify(userService, times(1)).findAllDto();
-//    }
+        List<UserDto> answer = userController.getAll();
+
+        verify(userService, times(1)).findAllDto();
+        Assertions.assertEquals(answer, response);
+    }
 }
