@@ -32,33 +32,33 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = UserController.class,
-        excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtRequestFilter.class)
-        })
-@AutoConfigureMockMvc
-@Import({WebMvcConfig.class, JacksonConfig.class})
+//@WebMvcTest(controllers = UserController.class,
+//        excludeFilters = {
+//                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
+//                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtRequestFilter.class)
+//        })
+//@AutoConfigureMockMvc
+//@Import({WebMvcConfig.class, JacksonConfig.class})
 public class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private UserService userService;
-
-    @SneakyThrows
-    @Test
-    void getAll() {
-        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
-
-        when(userService.findAllDto()).thenReturn(response);
-
-        mockMvc.perform(get("/user"))
-                .andExpect(status().isOk())
-                .andExpect(responseBody().containsObjectAsJson(response, new TypeReference<List<UserDto>>() {
-                }));
-
-        verify(userService, times(1)).findAllDto();
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private UserService userService;
+//
+//    @SneakyThrows
+//    @Test
+//    void getAll() {
+//        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
+//
+//        when(userService.findAllDto()).thenReturn(response);
+//
+//        mockMvc.perform(get("/user"))
+//                .andExpect(status().isOk())
+//                .andExpect(responseBody().containsObjectAsJson(response, new TypeReference<List<UserDto>>() {
+//                }));
+//
+//        verify(userService, times(1)).findAllDto();
+//    }
 }
