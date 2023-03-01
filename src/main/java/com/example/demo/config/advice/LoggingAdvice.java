@@ -2,7 +2,6 @@ package com.example.demo.config.advice;
 
 import com.example.demo.entity.LogEntity;
 import com.example.demo.service.LogService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

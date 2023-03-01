@@ -6,16 +6,24 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfiguration {
 
+    @Value("${rabbitmq.host}")
+    private String host;
+
     //Создаем соединение с именем localhost
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory("localhost");
+        cachingConnectionFactory.setUsername("user");
+        cachingConnectionFactory.setPassword("password");
+        cachingConnectionFactory.setVirtualHost("cpp");
+        return cachingConnectionFactory;
     }
 
     //Модуль управления

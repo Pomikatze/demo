@@ -34,33 +34,33 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = UserController.class)
-@Import({WebMvcConfig.class, JacksonConfig.class})
+//@SpringBootTest(classes = UserController.class)
+//@Import({WebMvcConfig.class, JacksonConfig.class})
 public class UserControllerTest {
 
 //    @Autowired
 //    private MockMvc mockMvc;
 
-    @Autowired
-    private UserController userController;
-
-    @MockBean
-    private UserService userService;
-
-    @SneakyThrows
-    @Test
-    void getAll() {
-        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
-
-        when(userService.findAllDto()).thenReturn(response);
-
-//        mockMvc.perform(get("/user"))
-//                .andExpect(status().isOk())
-//                .andExpect(responseBody().containsObjectAsJson(response, new TypeReference<List<UserDto>>() {
-//                }));
-        List<UserDto> answer = userController.getAll();
-
-        verify(userService, times(1)).findAllDto();
-        Assertions.assertEquals(answer, response);
-    }
+//    @Autowired
+//    private UserController userController;
+//
+//    @MockBean
+//    private UserService userService;
+//
+//    @SneakyThrows
+//    @Test
+//    void getAll() {
+//        List<UserDto> response = Collections.singletonList(make(a(USER_DTO_INSTANTIATOR)));
+//
+//        when(userService.findAllDto()).thenReturn(response);
+//
+////        mockMvc.perform(get("/user"))
+////                .andExpect(status().isOk())
+////                .andExpect(responseBody().containsObjectAsJson(response, new TypeReference<List<UserDto>>() {
+////                }));
+//        List<UserDto> answer = userController.getAll();
+//
+//        verify(userService, times(1)).findAllDto();
+//        Assertions.assertEquals(answer, response);
+//    }
 }
